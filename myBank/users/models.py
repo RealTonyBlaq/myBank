@@ -9,6 +9,7 @@ class User(models.Model):
     phone_number = models.CharField(max_length=14)
     email = models.EmailField(max_length=254)
     state_of_origin = models.CharField(max_length=40)
+    lga_of_origin = models.CharField(max_length=40, null=True, blank=True)
     date_of_birth = models.DateField()
     mother_maiden_name = models.CharField(max_length=40)
     BVN = models.CharField(max_length=11)
@@ -20,7 +21,7 @@ class User(models.Model):
     # account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     # Boolean fields
-    is_email_verified = models.BooleanField(default=False)
+    # is_email_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email}) - {self.phone_number})"
