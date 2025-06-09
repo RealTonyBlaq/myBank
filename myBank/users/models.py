@@ -12,7 +12,7 @@ class User(models.Model):
     lga_of_origin = models.CharField(max_length=40, null=True, blank=True)
     date_of_birth = models.DateField()
     mother_maiden_name = models.CharField(max_length=40)
-    BVN = models.CharField(max_length=11)
+    BVN = models.CharField(max_length=11, editable=False)
     NIN = models.CharField(max_length=11, blank=True, null=True)
     title = models.CharField(max_length=5)
     date_created = models.DateTimeField(auto_now_add=True)
