@@ -16,6 +16,18 @@ def create_officer(request):
     middle_name = data.get('middle_name', '')
     phone_number = data.get('phone_number')
     email = data.get('email')
+    grade = data.get('grade')
+    if not first_name or not last_name or not phone_number or not email:
+        return JsonResponse({'error': 'Missing required fields'}, status=400)
+
+    # Validate phone number and email format if necessary
+    if not phone_number.isdigit():
+        return JsonResponse({'error': 'Invalid phone number format'}, status=400)
+
+    if '@' not in email or '.' not in email.split('@')[-1]:
+        return JsonResponse({'error': 'Invalid email format'}, status=400)
+
+    # Default department to 'Sales' if not provided
     department = data.get('department', 'Sales')
 
     try:
@@ -25,7 +37,8 @@ def create_officer(request):
             middle_name=middle_name,
             phone_number=phone_number,
             official_email=email,
-            department=department
+            department=department,
+            grade=grade
         )
         officer.save()
     except Exception as e:
