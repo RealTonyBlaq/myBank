@@ -33,7 +33,6 @@ def calculate_account_balance(account) -> float:
     Returns:
         float: The calculated balance of the account.
     """
-    from .models import Account
     if not account:
         return 0.0
 
@@ -54,7 +53,7 @@ def generate_account_number(account_type: str) -> tuple[str, dict]:
     from .models import Account
     prefix = ACCOUNT_DEFAULTS.get(account_type.upper(), {}).get('PREFIX', '400') # default to SAVINGS prefix if not found
     while True:
-        suffix = ''.join(random.choices('0123456789', k=6))
+        suffix = ''.join(random.choices('0123456789', k=7))
         account_number = f"{prefix}{suffix}"
         if not Account.objects.filter(account_number=account_number).exists():
             return account_number, ACCOUNT_DEFAULTS.get(account_type.upper(), ACCOUNT_DEFAULTS['SAVINGS'])
