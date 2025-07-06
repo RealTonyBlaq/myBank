@@ -7,6 +7,7 @@ class AccountOfficer(models.Model):
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
     middle_name = models.CharField(max_length=40, default='', blank=True)
+    grade = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=14, unique=True)
     official_email = models.EmailField(max_length=254, unique=True)
     employee_id = models.AutoField(primary_key=True)
