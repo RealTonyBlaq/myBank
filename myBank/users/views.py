@@ -2,9 +2,6 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import User
-from accounts.models import Account
-from staff.models import AccountOfficer
-from accounts.helper_functions import generate_account_number
 import json
 
 # Create your views here.
@@ -12,7 +9,7 @@ import json
 @ensure_csrf_cookie
 @require_GET
 def home(request):
-    return HttpResponse("Welcome to the myBank")
+    return HttpResponse("Welcome to myBank")
 
 @require_POST
 def create_user(request):
@@ -27,15 +24,11 @@ def create_user(request):
     date_of_birth = data.get('date_of_birth')
     mother_maiden_name = data.get('mother_maiden_name')
     BVN = data.get('BVN')
-    NIN = data.get('NIN', None)
+    NIN = data.get('NIN')
     title = data.get('title')
-    account_type = data.get('account_type')
-    account_level = data.get('account_level')
-    account_officer_id = data.get('MIS_CODE')
 
-    officer = AccountOfficer.objects.filter(employee_id=account_officer_id)
-    if not officer:
-        return JsonResponse({'message': 'Invalid MIS Code'}, status=400)
+    if not BVN and not NIN:
+        return JsonResponse({'error': 'Either BVN or NIN must be provided'}, status=400)
 
     try:
         new_user = User.objects.create(
@@ -56,14 +49,5 @@ def create_user(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-    account_number, account_class = generate_account_number(account_type)
-    new_account = Account.objects.create(
-        user=new_user,
-        account_number=account_number,
-        account_level=account_level,
-        account_officer=officer,
-        CLASS=account_class
-    )
-    new_account.save()
     return JsonResponse({
-        'message': 'User created'}, status=201)
+        'message': 'User created', 'data': new_user.to_dict()}, status=201)
