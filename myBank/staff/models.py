@@ -4,6 +4,7 @@ from django.utils import timezone
 # Create your models here.
 
 class AccountOfficer(models.Model):
+    user = models.OneToOneField('users.User', on_delete=models.DO_NOTHING, related_name='account_officer', null=True, blank=True)
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
     middle_name = models.CharField(max_length=40, default='', blank=True)
