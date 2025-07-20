@@ -19,8 +19,8 @@ class Debit(models.Model):
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='debits')
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
-    amount = models.DecimalField(max_digits=15, decimal_places=2)
-    transaction_id = models.UUIDField(default=uuid4, editable=False, unique=True)
+    amount = models.FloatField()
+    transaction_id = models.UUIDField(default=uuid4(), editable=False, unique=True)
     status = models.CharField(choices=TRANSACTION_STATUS, default='pending')
     narration = models.CharField(max_length=255, blank=True, null=True)
     balance_before_transaction = models.DecimalField(max_digits=15, decimal_places=2)
@@ -43,13 +43,13 @@ class Credit(models.Model):
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='credits')
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
-    amount = models.DecimalField(max_digits=15, decimal_places=2)
+    amount = models.FloatField()
     transaction_id = models.UUIDField(default=uuid4, editable=False, unique=True)
     session_id = models.CharField(unique=True, blank=False, null=False)
     status = models.CharField(choices=TRANSACTION_STATUS, default='completed')
     narration = models.CharField(max_length=255, blank=True, null=True)
-    balance_before_transaction = models.DecimalField(max_digits=15, decimal_places=2)
-    balance_after_transaction = models.DecimalField(max_digits=15, decimal_places=2)
+    # balance_before_transaction = models.DecimalField(max_digits=15, decimal_places=2)
+    # balance_after_transaction = models.DecimalField(max_digits=15, decimal_places=2)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now_add=True)
 
@@ -66,7 +66,7 @@ class Ledger(models.Model):
         ('debit', 'Debit'),
         ('credit', 'Credit'),
     ])
-    amount = models.DecimalField(max_digits=15, decimal_places=2)
+    amount = models.FloatField()
     date_created = models.DateTimeField(auto_now_add=True)
     narration = models.CharField(max_length=255, blank=True, null=True)
 
