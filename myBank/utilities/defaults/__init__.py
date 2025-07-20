@@ -15,7 +15,7 @@ def set_account_defaults(data: List[Dict] = []):
     type - The type of account
 
     value - The defaults to be set.
-            keys: PREFIX, ACC_CODE, ACC_TYPE, ACC_DETAIL
+            keys: PREFIX, ACC_CODE, ACC_TYPE, ACC_DETAIL, CUSTOMER_TYPE
     """
 
     ACCOUNT_DEFAULTS = [
@@ -25,7 +25,8 @@ def set_account_defaults(data: List[Dict] = []):
                 'PREFIX': '400',
                 'ACC_CODE': 'CUSACC',
                 'ACC_TYPE': 'SAVINGS',
-                'ACC_DETAIL': 'INDIVIDUAL SAVINGS ACCOUNT'
+                'ACC_DETAIL': 'INDIVIDUAL SAVINGS ACCOUNT',
+                'CUSTOMER_TYPE': 'INDIVIDUAL'
             }
         },
         {
@@ -34,7 +35,8 @@ def set_account_defaults(data: List[Dict] = []):
                 'PREFIX': '410',
                 'ACC_CODE': 'CUCACC',
                 'ACC_TYPE': 'CURRENT',
-                'ACC_DETAIL': 'INDIVIDUAL CURRENT ACCOUNT'
+                'ACC_DETAIL': 'INDIVIDUAL CURRENT ACCOUNT',
+                'CUSTOMER_TYPE': 'INDIVIDUAL'
             }
         },
         {
@@ -43,7 +45,8 @@ def set_account_defaults(data: List[Dict] = []):
                 'PREFIX': '411',
                 'ACC_CODE': 'CUFACC',
                 'ACC_TYPE': 'FIXED DEPOSIT',
-                'ACC_DETAIL': 'INDIVIDUAL FIXED DEPOSIT ACCOUNT'
+                'ACC_DETAIL': 'INDIVIDUAL FIXED DEPOSIT ACCOUNT',
+                'CUSTOMER_TYPE': 'INDIVIDUAL'
             }
         }
     ]
