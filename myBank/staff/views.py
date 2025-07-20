@@ -1,6 +1,6 @@
 from django.http import JsonResponse
+from users.models import User
 from .models import AccountOfficer
-from django.forms.models import model_to_dict
 from django.views.decorators.http import require_POST, require_http_methods
 from django.utils import timezone
 import json
@@ -11,14 +11,20 @@ import json
 @require_POST
 def create_officer(request):
     data = json.loads(request.body)
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
-    middle_name = data.get('middle_name', '')
     phone_number = data.get('phone_number')
     email = data.get('email')
     grade = data.get('grade')
-    if not first_name or not last_name or not phone_number or not email:
-        return JsonResponse({'error': 'Missing required fields'}, status=400)
+    user_id = data.get('user_id')
+    department = data.get('department')
+    role = data.get('role')
+
+    for field in ['phone_number', 'email', 'grade', 'user_id', 'department']:
+        if not data.get(field):
+            return JsonResponse({'error': f'{field} is required.'}, status=400)
+
+    user = User.objects.filter(id=user_id).first()
+    if not user:
+        return JsonResponse({'error': 'User not found'}, status=404)
 
     # Validate phone number and email format if necessary
     if not phone_number.isdigit():
@@ -27,24 +33,23 @@ def create_officer(request):
     if '@' not in email or '.' not in email.split('@')[-1]:
         return JsonResponse({'error': 'Invalid email format'}, status=400)
 
-    # Default department to 'Sales' if not provided
-    department = data.get('department', 'Sales')
-
     try:
         officer = AccountOfficer.objects.create(
-            first_name=first_name,
-            last_name=last_name,
-            middle_name=middle_name,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            middle_name=user.middle_name,
             phone_number=phone_number,
             official_email=email,
             department=department,
-            grade=grade
+            grade=grade,
+            user=user,
+            role=role,
         )
         officer.save()
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-    return JsonResponse({'message': 'success', 'data': model_to_dict(officer)},
+    return JsonResponse({'message': 'Account Officer created', 'data': officer.to_dict()},
                         status=201)
 
 
@@ -65,14 +70,14 @@ def get_officer(request, officer_id):
     if not officer:
         return JsonResponse({'error': 'Officer not found'}, status=404)
 
-    return JsonResponse({'message': 'success', 'data': model_to_dict(officer)},
+    return JsonResponse({'message': 'success', 'data': officer.to_dict()},
                         status=200)
 
 
 @require_http_methods(["GET"])
 def get_all_officers(request):
     officers = AccountOfficer.objects.all()
-    officers_data = [model_to_dict(officer) for officer in officers]
+    officers_data = [officer.to_dict() for officer in officers]
     return JsonResponse({'message': 'success', 'data': officers_data}, status=200)
 
 
@@ -92,5 +97,5 @@ def update_officer(request, officer_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-    return JsonResponse({'message': 'success', 'data': model_to_dict(officer)},
+    return JsonResponse({'message': 'success', 'data': officer.to_dict()},
                         status=200)
