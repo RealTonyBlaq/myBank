@@ -2,7 +2,7 @@ import random
 from utilities.defaults import get_account_defaults, set_account_defaults
 
 
-def calculate_account_balance(account) -> float:
+def calculate_account_balance(account) -> str:
     """
     Calculate the balance of a given account.
     
@@ -13,14 +13,13 @@ def calculate_account_balance(account) -> float:
         float: The calculated balance of the account.
     """
     if not account:
-        return 0.0
+        return '0.00'
 
     # if account.account_type.lower() in ['savings', 'current']:
-    total_debits = sum([value for value.amount in account.debits.all()]) # type: ignore
-    total_credits = sum([value for value.amount in account.credits.all()]) # type: ignore 
+    total_debits = sum([value.amount for value in account.debits.all()]) if account.debits.exists() else 0.00
+    total_credits = sum([value.amount for value in account.credits.all()]) if account.credits.exists() else 0.00
     balance = total_credits - total_debits
-    return balance
-    # return 0.0
+    return f'{balance:,.2f}'
 
 
 def generate_account_number(account_type: str) -> tuple[str, dict]:
