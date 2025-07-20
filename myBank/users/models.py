@@ -28,6 +28,13 @@ class User(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email}) - {self.phone_number})"
 
+    @property
+    def all_accounts(self):
+        """
+        Returns a list of accounts associated with the user.
+        """
+        return self.accounts.all()
+
     def to_dict(self):
         """
         Convert the User instance to a dictionary.
