@@ -32,5 +32,22 @@ class Account(models.Model):
         """
         return calculate_account_balance(self)
 
+    def to_dict(self):
+        """ Returns a dictionary representation of the account """
+        return {
+            'id': self.id,
+            'user': self.user.to_dict(),
+            'account_officer': self.account_officer.to_dict(),
+            'account_number': self.account_number,
+            'account_level': self.account_level,
+            'balance': str(self.balance),
+            'date_created': self.date_created.isoformat(),
+            'date_updated': self.date_updated.isoformat(),
+            'is_PND_active': self.is_PND_active,
+            'is_dormant': self.is_dormant,
+            'CLASS': self.CLASS,
+            'balance': self.balance
+        }
+
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} - {self.account_number}"
