@@ -45,6 +45,8 @@ class User(models.Model):
             'last_name': self.last_name,
             'middle_name': self.middle_name,
             'phone_number': self.phone_number,
+            'address': self.address.to_dict() if self.address.exists() else None, # type: ignore
+            'next_of_kin': self.next_of_kin.to_dict() if self.next_of_kin.exists() else None, # type: ignore
             'email': self.email,
             'state_of_origin': self.state_of_origin,
             'lga_of_origin': self.lga_of_origin,
