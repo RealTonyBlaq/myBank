@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -30,6 +31,19 @@ def create_user(request):
     if not BVN and not NIN:
         return JsonResponse({'error': 'Either BVN or NIN must be provided'}, status=400)
 
+    existing_user = User.objects.filter(BVN=BVN, NIN=NIN).first()
+    if existing_user:
+        return JsonResponse({'error': 'User exists', 'existing_user_id': existing_user.id}, status=400)
+
+    for field in ['first_name', 'last_name', 'phone_number', 'email', 'state_of_origin', 'lga_of_origin', 'date_of_birth', 'mother_maiden_name', 'title']:
+        if not data.get(field):
+            return JsonResponse({'error': f'{field} is required.'}, status=400)
+
+    try:
+        formatted_date = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+    except Exception:
+        return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+
     try:
         new_user = User.objects.create(
             first_name=first_name,
@@ -39,7 +53,7 @@ def create_user(request):
             email=email,
             state_of_origin=state_of_origin,
             lga_of_origin=lga_of_origin,
-            date_of_birth=date_of_birth,
+            date_of_birth=formatted_date,
             mother_maiden_name=mother_maiden_name,
             BVN=BVN,
             NIN=NIN,
