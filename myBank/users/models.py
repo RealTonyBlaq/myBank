@@ -19,11 +19,7 @@ class User(models.Model):
     title = models.CharField(max_length=5)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    # account_number = models.CharField(max_length=10, unique=True)
-    # account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-
-    # Boolean fields
-    # is_email_verified = models.BooleanField(default=False)
+    
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email}) - {self.phone_number})"
@@ -33,7 +29,7 @@ class User(models.Model):
         """
         Returns a list of accounts associated with the user.
         """
-        return self.accounts.all()
+        return self.accounts.all() # type: ignore
 
     def to_dict(self):
         """
@@ -99,9 +95,11 @@ class NextOfKin(models.Model):
     last_name = models.CharField(max_length=40)
     middle_name = models.CharField(max_length=40, default='', blank=True)
     phone_number = models.CharField(max_length=14)
-    email = models.EmailField(max_length=254, blank=True)
+    email = models.EmailField(max_length=254, blank=True, null=True)
     relationship = models.CharField(max_length=20)
-    address = models.TextField(blank=True)
+    address = models.TextField(blank=True, null=True)
+    state = models.CharField(max_length=40, blank=True, null=True)
+    lga = models.CharField(max_length=40, null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
 
