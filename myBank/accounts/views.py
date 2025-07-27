@@ -37,7 +37,7 @@ def create_account(request):
         return JsonResponse({'error': 'User not found'}, status=404)
 
     # Check if user qualifies for the account level
-    # Chec if user has accounts
+    # Check if user has accounts
 
     account_officer = AccountOfficer.objects.filter(employee_id=account_officer_id).first()
     if not account_officer:
