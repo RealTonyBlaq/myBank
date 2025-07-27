@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import create_user, home, update_user, delete_user, get_user, list_users
-from address.views import get_address, create_address, update_address
-from next_of_kin.views import get_nok, create_nok, update_nok, delete_nok
+from .address.views import get_address, create_address, update_address
+from .next_of_kin.views import get_nok, create_nok, update_nok, delete_nok
 
 urlpatterns = [
     path('create', create_user, name='create_user'),
