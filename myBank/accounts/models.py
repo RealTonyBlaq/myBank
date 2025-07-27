@@ -37,7 +37,7 @@ class Account(models.Model):
         return {
             'id': self.id,
             'user': self.user.to_dict(),
-            'account_officer': self.account_officer.to_dict(),
+            'account_officer': self.account_officer.to_dict(), # type: ignore
             'account_number': self.account_number,
             'account_level': self.account_level,
             'balance': str(self.balance),
