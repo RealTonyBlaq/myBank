@@ -34,5 +34,6 @@ class AccountOfficer(models.Model):
             'department': self.department,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
-            'is_active': self.is_active
+            'is_active': self.is_active,
+            'CABAL': self.accounts
         }
