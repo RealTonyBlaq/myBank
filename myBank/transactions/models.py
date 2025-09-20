@@ -14,7 +14,7 @@ TRANSACTION_STATUS = (
 class Debit(models.Model):
     TRANSACTION_TYPES = (
         ('withdrawal', 'Withdrawal'),
-        ('transfer', 'Transfer'),
+        ('outward_transfer', 'Outward_Transfer'),
     )
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='debits')
@@ -38,7 +38,7 @@ class Debit(models.Model):
 class Credit(models.Model):
     TRANSACTION_TYPES = (
         ('deposit', 'Deposit'),
-        ('transfer', 'Transfer'),
+        ('inward_transfer', 'Inward_Transfer'),
     )
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='credits')
