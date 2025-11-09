@@ -18,7 +18,7 @@ class Debit(models.Model):
     )
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='debits')
-    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
     amount = models.FloatField()
     transaction_id = models.UUIDField(default=uuid4(), editable=False, unique=True)
     status = models.CharField(choices=TRANSACTION_STATUS, default='pending')
@@ -42,7 +42,7 @@ class Credit(models.Model):
     )
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='credits')
-    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
+    transaction_type = models.CharField(max_length=15, choices=TRANSACTION_TYPES)
     amount = models.FloatField()
     transaction_id = models.UUIDField(default=uuid4, editable=False, unique=True)
     session_id = models.CharField(unique=True, blank=False, null=False)
