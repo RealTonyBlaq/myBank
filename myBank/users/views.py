@@ -58,9 +58,9 @@ def create_user(request):
     title = data.get('title')
 
     try:
-        formatted_date = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+        formatted_date = datetime.strptime(date_of_birth, '%d-%m-%Y').date()
     except Exception:
-        return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+        return JsonResponse({'error': 'Invalid date format. Use DD-MM-YYYY.'}, status=400)
 
     try:
         new_user = User.objects.create(
@@ -96,8 +96,16 @@ def update_user(request, user_id):
         return JsonResponse({'error': 'User not found'}, status=404)
 
     data = json.loads(request.body.decode('utf-8'))
+
+    if 'date_of_birth' in data:
+        try:
+            formatted_date = datetime.strptime(data['date_of_birth'], '%d-%m-%Y').date()
+            user.date_of_birth = formatted_date
+        except Exception:
+            return JsonResponse({'error': 'Invalid date format. Use DD-MM-YYYY.'}, status=400)
+
     for field in ['first_name', 'last_name', 'middle_name', 'phone_number',
-                  'email', 'state_of_origin', 'lga_of_origin', 'date_of_birth',
+                  'email', 'state_of_origin', 'lga_of_origin',
                   'mother_maiden_name', 'BVN', 'NIN', 'title']:
         if field in data:
             setattr(user, field, data[field])
@@ -131,4 +139,4 @@ def list_users(request):
     """ List all users. """
     users = User.objects.all()
     user_list = [user.to_dict() for user in users]
-    return JsonResponse({'data': user_list}, status=200)
+    return JsonResponse({'data': user_list, 'total_users': len(user_list)}, status=200)
