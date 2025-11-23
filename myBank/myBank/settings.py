@@ -41,8 +41,11 @@ INSTALLED_APPS = [
     'accounts',
     'USSD',
     'mobileApp',
-    'transactions',
     'staff',
+    'ledgers',
+    'debits',
+    'credits',
+    'alerts',
 ]
 
 MIDDLEWARE = [
